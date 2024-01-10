@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnc_admin/firebase_service.dart';
+import 'package:cnc_admin/widgets/categories_list_widget.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String id = 'category';
@@ -14,27 +19,51 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  File? _image;
+  final picker = ImagePicker();         //NEW
   final TextEditingController _cartName = TextEditingController();
   final FirebaseService _service = FirebaseService();
-dynamic image;
+ dynamic image = null;
 String? fileName;
 final _formKey  = GlobalKey<FormState>();
 
-    pickImage() async{
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.image,allowMultiple: false,
-      );
-        if(result!=null){
-          setState(() {
-                image = result.files.first.bytes;
-                fileName = result.files.first.name;
-          });
-        }else{
-                print("cancelled or Failed");
-        }
-    }
+firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;     //NEW
+DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NEW
 
-    saveImageToDb() async{
+  /*
+   pickImage() async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,allowMultiple: false,
+    );
+    if(result!=null){
+      setState(() {
+        image = result.files.first.bytes;
+        fileName = result.files.first.name;
+      });
+    }else{
+      print("cancelled or Failed");
+    }
+  }
+*/
+
+
+  Future _pickImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        image = _image!.readAsBytesSync();
+        fileName = pickedFile.name; // Update this line with the actual file name
+      } else {
+        print('no image picked');
+      }
+    });
+  }
+
+
+  saveImageToDb() async{
       var ref = firebase_storage.FirebaseStorage.instance
           .ref('categoryImage/$fileName');
         EasyLoading.show();
@@ -68,10 +97,12 @@ final _formKey  = GlobalKey<FormState>();
     clear(){
         setState(() {
           _cartName.clear();
-          image = null;
+          image = null;       //NEW
 
         });
     }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,18 +142,17 @@ final _formKey  = GlobalKey<FormState>();
                         border: Border.all(color: Colors.grey.shade500),
 
                       ),
-                      child: Center(
-                        child: image==null ?
-                         Text(
+                      child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : Center(
+                         child:Text(
                           'Category image',
-                        ):Image.memory(image),
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     ElevatedButton(onPressed: (){
-                        pickImage();
+                        _pickImage();
                     }, child: Text(
                       'Upload Image',
                     ),),
@@ -147,7 +177,9 @@ final _formKey  = GlobalKey<FormState>();
                 const SizedBox(
                   width: 10,
                 ),
-                TextButton(onPressed: (){}, child: Text(
+                TextButton(onPressed: (){
+                  clear();
+                }, child: Text(
                   'Cancel',
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
@@ -184,8 +216,12 @@ final _formKey  = GlobalKey<FormState>();
               ),
             ),
           ),
+          const SizedBox(height: 10,),
+          CategoryListWidget()
         ],
       ),
     );
   }
 }
+
+

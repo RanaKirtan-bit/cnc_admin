@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1068664914210-fuomqicn9ul8p1rnesbg3f0g3qhlhuf8.apps.googleusercontent.com",
+              "client_id": "1068664914210-8de1ul706fkbd67mc1hfngrv4ua6ar73.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.clickncart"
+                "bundle_id": "com.example.cncAdmin.RunnerTests"
               }
             }
           ]
@@ -57,6 +57,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1068664914210-i750o4r6rjtpjlv9ai6prt8pj1pauv4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cnc_admin",
+            "certificate_hash": "5d4b6a1f73575ff8aa69ae49752a99a1e5275836"
+          }
+        },
         {
           "client_id": "1068664914210-1q70m27rd71gaejq017u0ret3u34t4re.apps.googleusercontent.com",
           "client_type": 3
@@ -75,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1068664914210-fuomqicn9ul8p1rnesbg3f0g3qhlhuf8.apps.googleusercontent.com",
+              "client_id": "1068664914210-8de1ul706fkbd67mc1hfngrv4ua6ar73.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.clickncart"
+                "bundle_id": "com.example.cncAdmin.RunnerTests"
               }
             }
           ]

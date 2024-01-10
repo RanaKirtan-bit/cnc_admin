@@ -43,6 +43,12 @@ dependencies:
   date_time_format: ^2.0.1
   file_picker: ^6.1.1
   flutter_easyloading: ^3.0.5
+  firebase_database: ^10.4.0
+  image_picker:
+
+  mime_type: ^1.0.0
+  path:
+
 
 dev_dependencies:
   flutter_test:
