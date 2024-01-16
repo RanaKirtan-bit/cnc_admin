@@ -2,13 +2,15 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnc_admin/firebase_service.dart';
-import 'package:cnc_admin/widgets/categories_list_widget.dart';
+import 'package:cnc_admin/widgets/main_categories_list_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
+
+import '../widgets/category_list_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String id = 'category';
@@ -72,11 +74,15 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
               String downloadURL = await ref
               .getDownloadURL().then((value) {
                       if(value.isNotEmpty) {
-                        _service.saveCategory({
+                        _service.saveCategory(
+                            data: {
                           'cartName': _cartName.text,
                           'image': value,
                           'active': true,
-                        }).then((value) {
+                        },
+                          docName: _cartName.text,
+                          reference: _service.categories
+                        ).then((value) {
                           clear();
                           EasyLoading.dismiss();
                         });
