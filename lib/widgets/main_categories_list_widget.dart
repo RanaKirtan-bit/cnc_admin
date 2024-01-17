@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+//import 'package:path/path.dart';
 
 import '../firebase_service.dart';
 
@@ -11,7 +11,7 @@ class MainCategoryListWidget extends StatefulWidget {
   State<MainCategoryListWidget> createState() => _MainCategoryListWidgetState();
 }
 class _MainCategoryListWidgetState extends State<MainCategoryListWidget> {
-  FirebaseService _service = FirebaseService();
+  final FirebaseService _service = FirebaseService();
   String? _selectedValue;
   QuerySnapshot? snapshot;
 
@@ -28,7 +28,7 @@ class _MainCategoryListWidgetState extends State<MainCategoryListWidget> {
               child: Center(
                 child: Text(
                   data['mainCategory'], // Assuming 'cartName' is the correct field
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -78,21 +78,22 @@ class _MainCategoryListWidgetState extends State<MainCategoryListWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        snapshot == null ? Text('Loading..') : Row(
+        snapshot == null ? const Text('Loading..') :
+        Row(
           children: [
             _dropDownButton(),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             ElevatedButton(
               onPressed: () {
                 setState(() {
                   _selectedValue = null;
                 });
               },
-              child: Text('Show All'),
-            )
+              child: const Text('Show All'),
+            ),
           ],
         ),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         StreamBuilder<QuerySnapshot>(
           stream: _selectedValue == null
               ? _service.mainCart.snapshots()

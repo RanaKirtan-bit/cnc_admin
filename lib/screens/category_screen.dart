@@ -223,7 +223,9 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
             ),
           ),
           const SizedBox(height: 10,),
-          CategoryListWidget()
+          CategoryListWidget(
+            reference: _service.categories,
+          ),
         ],
       ),
     );
