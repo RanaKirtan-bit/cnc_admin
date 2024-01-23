@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 
 import '../widgets/category_list_widget.dart';
+import '../widgets/sub_categories_list_widget.dart';
 
 
 class SubCategoryScreen extends StatefulWidget {
@@ -273,10 +274,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             ),
           ),
           const SizedBox(height: 10,),
-           CategoryListWidget(
+          CategoryListWidget(
             reference: _service.subCart,
-          )
-          ],
+          ),
+        ],
       ),
     );
   }
