@@ -1,9 +1,7 @@
-import 'dart:typed_data';
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnc_admin/firebase_service.dart';
-import 'package:cnc_admin/widgets/main_categories_list_widget.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -119,7 +117,7 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.all(10),
-            child:  Text(
+            child:  const Text(
                 'Categories',
                     style: TextStyle(
                           fontSize: 26,
@@ -127,14 +125,14 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
             ),
             ),
           ),
-          Divider(
+          const Divider(
             color: Colors.grey,
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Column(
@@ -148,23 +146,23 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
                         border: Border.all(color: Colors.grey.shade500),
 
                       ),
-                      child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : Center(
+                      child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : const Center(
                          child:Text(
                           'Category image',
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     ElevatedButton(onPressed: (){
                         _pickImage();
-                    }, child: Text(
+                    }, child: const Text(
                       'Upload Image',
                     ),),
                   ],
                 ),
-                SizedBox(width: 20,),
+                const SizedBox(width: 20,),
                  SizedBox(
                     width: 200,
                   child: TextFormField(
@@ -174,7 +172,7 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
                       }
                   },
                     controller: _cartName,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         label: Text('Enter category name'),
                       contentPadding: EdgeInsets.zero,
                     ),
@@ -185,15 +183,16 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
                 ),
                 TextButton(onPressed: (){
                   clear();
-                }, child: Text(
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
+                ),
+                  child: Text(
                   'Cancel',
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
-                ),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
                 ),
                 ),
                 const SizedBox(width: 10,),
@@ -201,20 +200,20 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
                   if(_formKey.currentState!.validate()){
                     saveImageToDb();
                   }
-                }, child: Text(
+                }, child: const Text(
                   'Save',
                   ),
                 ),
               ],
             ),
           ),
-          Divider(
+          const Divider(
             color: Colors.grey,
           ),
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.all(10),
-            child:  Text(
+            child:  const Text(
               'Category List',
               style: TextStyle(
                 fontSize: 18,

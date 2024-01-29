@@ -130,10 +130,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   clear(){
     setState(() {
       _subCartName.clear();
+
       image = null;       //NEW
 
     });
   }
+
 
 
   @override
@@ -202,31 +204,33 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                 ],
               ),
               SizedBox(width: 10,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    snapshot==null ? const Text('Loading...') :
-                    _dropDownButton(),
-                    const SizedBox(height: 8,),
-                    if(_noCategorySelected == true)
-                      const Text('No Main Category Selected', style: TextStyle(color: Colors.red,),),
-                    SizedBox(
-                      width: 200,
-                      child: TextFormField(
-                        validator: (value) {
-                          if(value!.isEmpty){
-                            return 'Enter Sub Category Name';
-                          }
-                        },
-                        controller: _subCartName,
-                        decoration: const InputDecoration(
-                          label: Text('Enter Sub category name'),
-                          contentPadding: EdgeInsets.zero,
-                        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  snapshot==null ? const Text('Loading...') :
+                  _dropDownButton(),
+                  const SizedBox(height: 8,),
+                  if(_noCategorySelected == true)
+                    const Text('No Main Category Selected', style: TextStyle(color: Colors.red,),),
+                  SizedBox(
+                    width: 200,
+                    child: TextFormField(
+                      validator: (value) {
+                        if(value!.isEmpty){
+                          return 'Enter Sub Category Name';
+                        }
+                      },
+                      controller: _subCartName,
+                      decoration: const InputDecoration(
+                        label: Text('Enter Sub category name'),
+                        contentPadding: EdgeInsets.zero,
                       ),
                     ),
-                    const SizedBox(height: 20,),
-                    Row(
+                  ),
+                  const SizedBox(height: 20,),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                       children: [
                         TextButton(onPressed: (){
                           clear();
@@ -238,25 +242,26 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                         ),
                         const SizedBox(width: 10,),
                         if(image!=null)
-                        ElevatedButton(onPressed: (){
-                          if(_selectedValue==null){
-                            setState(() {
-                              _noCategorySelected = true;
-                            });
-                            return;
-                          }
-                          if(_formKey.currentState!.validate()){
-                            saveImageToDb();
-                          }
-                        },
-                          child: const Text(
-                            'Save',
+                          ElevatedButton(onPressed: (){
+                            if(_selectedValue==null){
+                              setState(() {
+                                _noCategorySelected = true;
+                              });
+                              return;
+                            }
+                            if(_formKey.currentState!.validate()){
+                              saveImageToDb();
+                            }
+                          },
+                            child: const Text(
+                              'Save',
+                            ),
                           ),
-                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
             ],
           ),
 
@@ -274,7 +279,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             ),
           ),
           const SizedBox(height: 10,),
-          CategoryListWidget(
+          SubCategoryListWidget(
             reference: _service.subCart,
           ),
         ],

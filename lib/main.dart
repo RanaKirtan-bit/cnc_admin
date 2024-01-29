@@ -3,6 +3,7 @@ import 'package:cnc_admin/screens/category_screen.dart';
 import 'package:cnc_admin/screens/dashboard_screen.dart';
 import 'package:cnc_admin/screens/main_category_screen.dart';
 import 'package:cnc_admin/screens/sub_category_screen.dart';
+import 'package:cnc_admin/screens/vendors_screen.dart';
 import 'package:date_time_format/date_time_format.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -46,31 +47,37 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
 
-  Widget _selectedScreen = DashBoardScreen();
+  Widget _selectedScreen = const DashBoardScreen();
 
   screenSelector(item){
       switch(item.route){
         case DashBoardScreen.id:
           setState(() {
-            _selectedScreen = DashBoardScreen();
+            _selectedScreen = const DashBoardScreen();
           });
           break;
         case CategoryScreen.id:
           setState(() {
-            _selectedScreen = CategoryScreen();
+            _selectedScreen = const CategoryScreen();
           });
           break;
         case MainCategoryScreen.id:
           setState(() {
-            _selectedScreen = MainCategoryScreen();
+            _selectedScreen = const MainCategoryScreen();
           });
           break;
 
         case SubCategoryScreen.id:
           setState(() {
-            _selectedScreen = SubCategoryScreen();
+            _selectedScreen = const SubCategoryScreen();
           });
           break;
+        case VendorScreen.id:
+          setState(() {
+            _selectedScreen = const VendorScreen();
+          });
+          break;
+
       }
   }
 
@@ -110,6 +117,11 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                 ],
               ),
+          AdminMenuItem(
+            title: 'Vendors',
+            route: VendorScreen.id,
+            icon: Icons.group_outlined,
+          ),
             ],
         selectedRoute: SideMenu.id,
         onSelected: (item) {
