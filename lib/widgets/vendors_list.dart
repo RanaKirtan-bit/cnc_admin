@@ -15,6 +15,7 @@ class VendorsList extends StatelessWidget {
       String? city,
       String? state,
       bool? isApproved,
+      String? documentId, // Added documentId parameter
       VoidCallback? onApprove,
       VoidCallback? onReject,
       VoidCallback? onViewMore,
@@ -28,14 +29,14 @@ class VendorsList extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 100, // Adjust the width as needed
+                width: 100,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.network(logoUrl!, width: 100, height: 100),
                 ),
               ),
               SizedBox(
-                width: 150, // Adjust the width as needed
+                width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -48,7 +49,7 @@ class VendorsList extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 150, // Adjust the width as needed
+                width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -61,7 +62,7 @@ class VendorsList extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 150, // Adjust the width as needed
+                width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -74,9 +75,25 @@ class VendorsList extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 150, // Adjust the width as needed
+                width: 150,
                 child: ElevatedButton(
-                  onPressed: isApproved != null && !isApproved ? onApprove : onReject,
+                  onPressed: isApproved != null && !isApproved
+                      ? () async {
+                    await _service.sellers.doc(documentId).update({
+                      'approved': true,
+                    });
+
+                    // Navigate to the vendor home screen
+                    Navigator.pushReplacementNamed(context, '/vendor_home');
+                  }
+                      : () async {
+                    await _service.sellers.doc(documentId).update({
+                      'approved': false,
+                    });
+
+                    // Navigate to the landing screen
+                    Navigator.pushReplacementNamed(context, '/landing');
+                  },
                   style: ElevatedButton.styleFrom(
                     primary: isApproved != null && !isApproved ? Colors.blue : Colors.red,
                   ),
@@ -84,7 +101,7 @@ class VendorsList extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 150, // Adjust the width as needed
+                width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
@@ -116,6 +133,7 @@ class VendorsList extends StatelessWidget {
           itemBuilder: (context, index) {
             Map<String, dynamic> data =
             snapshot.data!.docs[index].data() as Map<String, dynamic>;
+            String documentId = snapshot.data!.docs[index].id;
             bool isApproved = data['approved'] ?? false;
 
             return _vendorData(
@@ -124,8 +142,9 @@ class VendorsList extends StatelessWidget {
               city: data['city'],
               state: data['state'],
               isApproved: isApproved,
+              documentId: documentId, // Pass the document ID
               onApprove: () {
-                _service.sellers.doc(snapshot.data!.docs[index].id).update({
+                _service.sellers.doc(documentId).update({
                   'approved': true,
                 });
 
@@ -134,7 +153,7 @@ class VendorsList extends StatelessWidget {
                 print('${data['shopName']} has been approved.');
               },
               onReject: () {
-                _service.sellers.doc(snapshot.data!.docs[index].id).update({
+                _service.sellers.doc(documentId).update({
                   'approved': false,
                 });
 
