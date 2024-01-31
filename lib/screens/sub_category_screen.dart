@@ -130,7 +130,6 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   clear(){
     setState(() {
       _subCartName.clear();
-
       image = null;       //NEW
 
     });

@@ -40,19 +40,6 @@ class VendorScreen extends StatelessWidget {
               ),
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _rowHeader(flex: 1, text: 'LOGO'),
-                _rowHeader(flex: 3, text: 'BUSINESS NAME'),
-                _rowHeader(flex: 2, text: 'CITY'),
-                _rowHeader(flex: 1, text: 'STATE'),
-                _rowHeader(flex: 1, text: 'ACTION'),
-                _rowHeader(flex: 1, text: 'VIEW MORE'),
-              ],
-            ),
-          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.9, // Adjust the height as needed
             child: SingleChildScrollView(
