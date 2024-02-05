@@ -2,6 +2,7 @@ import 'package:cnc_admin/firebase_options.dart';
 import 'package:cnc_admin/screens/category_screen.dart';
 import 'package:cnc_admin/screens/dashboard_screen.dart';
 import 'package:cnc_admin/screens/main_category_screen.dart';
+import 'package:cnc_admin/screens/product_screen.dart';
 import 'package:cnc_admin/screens/sub_category_screen.dart';
 import 'package:cnc_admin/screens/vendors_screen.dart';
 import 'package:date_time_format/date_time_format.dart';
@@ -77,6 +78,11 @@ class _SideMenuState extends State<SideMenu> {
             _selectedScreen = const VendorScreen();
           });
           break;
+        case ProductScreen.id:
+          setState(() {
+            _selectedScreen = const ProductScreen();
+          });
+          break;
 
       }
   }
@@ -122,6 +128,12 @@ class _SideMenuState extends State<SideMenu> {
             route: VendorScreen.id,
             icon: Icons.group_outlined,
           ),
+          AdminMenuItem(
+            title: 'Products',
+            route: ProductScreen.id,
+            icon: Icons.group_outlined,
+          ),
+
             ],
         selectedRoute: SideMenu.id,
         onSelected: (item) {

@@ -7,6 +7,7 @@ class FirebaseService{
         CollectionReference mainCart = FirebaseFirestore.instance.collection('mainCategorise');
         CollectionReference subCart = FirebaseFirestore.instance.collection('subCategorise');
         CollectionReference sellers = FirebaseFirestore.instance.collection('sellers');
+        CollectionReference products = FirebaseFirestore.instance.collection('products');
 
         Future<void> saveCategory({CollectionReference? reference, Map<String,dynamic>? data, String? docName}){
 
