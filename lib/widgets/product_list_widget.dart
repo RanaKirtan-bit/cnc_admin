@@ -17,11 +17,14 @@ class _ProductsListState extends State<ProductsList> {
     Widget _productData({
       String? productName,
       String? category,
+      List<dynamic>? imageUrls,
       bool? isApproved,
       String? documentId,
       VoidCallback? onApprove,
       VoidCallback? onReject,
+      VoidCallback? onDelete,
     }) {
+      List<String> imageUrlList = List<String>.from(imageUrls ?? []);
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade400),
@@ -31,33 +34,41 @@ class _ProductsListState extends State<ProductsList> {
           child: Row(
             children: [
               SizedBox(
-                width: 150,
+                width: 100,
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(imageUrlList.isNotEmpty ? imageUrlList[0] : '', width: 100, height: 100),
+                ),
+              ),
+              SizedBox(
+                width: 80,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     productName!,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                width: 150,
+                width: 70,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     category!,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                width: 150,
+                width: 90,
                 child: ElevatedButton(
                   onPressed: isApproved != null && !isApproved
                       ? () async {
@@ -75,13 +86,17 @@ class _ProductsListState extends State<ProductsList> {
                     print('$productName has been rejected.');
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: isApproved != null && !isApproved
-                        ? Colors.blue
-                        : Colors.red,
+                    primary: isApproved != null && !isApproved ? Colors.blue : Colors.red,
                   ),
-                  child: Text(isApproved != null && !isApproved
-                      ? 'Approve'
-                      : 'Reject'),
+                  child: Text(isApproved != null && !isApproved ? 'Approve' : 'Reject'),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+                child: IconButton(
+                  onPressed: onDelete,
+                  icon: Icon(Icons.delete),
+                  color: Colors.deepPurple,
                 ),
               ),
             ],
@@ -103,15 +118,16 @@ class _ProductsListState extends State<ProductsList> {
 
         return ListView.builder(
           shrinkWrap: true,
+          physics: ScrollPhysics(),
           itemCount: snapshot.data!.size,
           itemBuilder: (context, index) {
-            Map<String, dynamic> data =
-            snapshot.data!.docs[index].data() as Map<String, dynamic>;
+            Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
             String documentId = snapshot.data!.docs[index].id;
             bool isApproved = data['approved'] ?? false;
 
             return _productData(
               productName: data['productName'],
+              imageUrls: data['imageUrls'],
               category: data['category'],
               isApproved: isApproved,
               documentId: documentId,
@@ -128,6 +144,12 @@ class _ProductsListState extends State<ProductsList> {
                 });
                 // Additional logic if needed
                 //print('$productName has been rejected.');
+              },
+              onDelete: () {
+                // Logic to delete the product
+                _service.products.doc(documentId).delete();
+                // Additional logic if needed
+                //print('$productName has been deleted.');
               },
             );
           },
