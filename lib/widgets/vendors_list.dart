@@ -168,9 +168,34 @@ class _VendorsListState extends State<VendorsList> {
                 // Additional logic if needed
                 print('${data['shopName']} has been rejected.');
               },
-              onViewMore: () {
-                // Implement the view more logic
-                print('View More for ${data['shopName']}');
+              onViewMore: () {showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Additional Details'),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('shopName: ${data['shopName'] ?? 'Not Available'}'),
+                        Text('Email: ${data['email'] ?? 'Not Available'}'),
+                        Text('Address: ${data['address'] ?? 'Not Available'}'),
+                        Text('Landmark: ${data['landmark'] ?? 'Not Available'}'),
+                        Text('Pincode: ${data['pinCode'] ?? 'Not Available'}'),
+                        Text('Phone.No: ${data['phoneNumber'] ?? 'Not Available'}'),
+                        // Add more details as needed
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Close'),
+                      ),
+                    ],
+                  );
+                },
+              );
               },
             );
           },

@@ -23,6 +23,8 @@ class _ProductsListState extends State<ProductsList> {
       VoidCallback? onApprove,
       VoidCallback? onReject,
       VoidCallback? onDelete,
+      VoidCallback? onViewMore,
+      String? brand,
     }) {
       List<String> imageUrlList = List<String>.from(imageUrls ?? []);
       return Container(
@@ -69,28 +71,46 @@ class _ProductsListState extends State<ProductsList> {
               ),
               SizedBox(
                 width: 90,
-                child: ElevatedButton(
-                  onPressed: isApproved != null && !isApproved
-                      ? () async {
-                    await _service.products.doc(documentId).update({
-                      'approved': true,
-                    });
-                    // Additional logic if needed
-                    print('$productName has been approved.');
-                  }
-                      : () async {
-                    await _service.products.doc(documentId).update({
-                      'approved': false,
-                    });
-                    // Additional logic if needed
-                    print('$productName has been rejected.');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: isApproved != null && !isApproved ? Colors.blue : Colors.red,
-                  ),
-                  child: Text(isApproved != null && !isApproved ? 'Approve' : 'Reject'),
+                child: Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: isApproved != null && !isApproved
+                          ? () async {
+                        await _service.products.doc(documentId).update({
+                          'approved': true,
+                        });
+                        // Additional logic if needed
+                        print('$productName has been approved.');
+                      }
+                          : () async {
+                        await _service.products.doc(documentId).update({
+                          'approved': false,
+                        });
+                        // Additional logic if needed
+                        print('$productName has been rejected.');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: isApproved != null && !isApproved ? Colors.blue : Colors.red,
+                      ),
+                      child: Text(isApproved != null && !isApproved ? 'Approve' : 'Reject'),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 90,
+                      child: ElevatedButton(
+                        onPressed: onViewMore,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                        ),
+                        child: Text('View More'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(
                 width: 20,
                 child: IconButton(
@@ -129,6 +149,7 @@ class _ProductsListState extends State<ProductsList> {
               productName: data['productName'],
               imageUrls: data['imageUrls'],
               category: data['category'],
+              brand: data['brand'],
               isApproved: isApproved,
               documentId: documentId,
               onApprove: () {
@@ -151,6 +172,38 @@ class _ProductsListState extends State<ProductsList> {
                 // Additional logic if needed
                 //print('$productName has been deleted.');
               },
+
+              onViewMore: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Additional Details'),
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Brand: ${data['brand'] ?? 'Not Available'}'),
+                          Text('Regular Price: ${data['regularPrice'] ?? 'Not Available'}'),
+                          Text('Sales Price: ${data['salesPrice'] ?? 'Not Available'}'),
+                          Text('Size: ${data['sizeList'] ?? 'Not Available'}'),
+
+                          // Add more details as needed
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Close'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+
+
             );
           },
         );
