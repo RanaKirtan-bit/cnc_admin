@@ -156,132 +156,140 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Container(
-            child:  Text(
-              'Sub Category Screen',
-              style: TextStyle(
-                fontSize: 30,
-              ),
-            ),
-          ),
-          Divider(color: Colors.orange,),
-
-          Row(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
-              SizedBox(
-                width: 10,
+              Container(
+                child:  Text(
+                  'Sub Category Screen',
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
               ),
-              Column(
-                children: [
-                  Container(
-                    height: 150,
-                    width:  150,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade500,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.grey.shade500),
+              Divider(color: Colors.orange,),
 
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
                     ),
-                    child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : Center(
-                      child:Text(
-                        'Sub Category image',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(onPressed: (){
-                    _pickImage();
-                  }, child: Text(
-                    'Upload Image',
-                  ),),
-                ],
-              ),
-              SizedBox(width: 10,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  snapshot==null ? const Text('Loading...') :
-                  _dropDownButton(),
-                  const SizedBox(height: 8,),
-                  if(_noCategorySelected == true)
-                    const Text('No Main Category Selected', style: TextStyle(color: Colors.red,),),
-                  SizedBox(
-                    width: 200,
-                    child: TextFormField(
-                      validator: (value) {
-                        if(value!.isEmpty){
-                          return 'Enter Sub Category Name';
-                        }
-                      },
-                      controller: _subCartName,
-                      decoration: const InputDecoration(
-                        label: Text('Enter Sub category name'),
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20,),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+                    Column(
                       children: [
-                        TextButton(onPressed: (){
-                          clear();
-                        }, child: Text( 'Cancel', style: TextStyle(color: Theme.of(context).primaryColor,),),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
-                            side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
+                        Container(
+                          height: 150,
+                          width:  150,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade500,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.grey.shade500),
+
                           ),
-                        ),
-                        const SizedBox(width: 10,),
-                        if(image!=null)
-                          ElevatedButton(onPressed: (){
-                            if(_selectedValue==null){
-                              setState(() {
-                                _noCategorySelected = true;
-                              });
-                              return;
-                            }
-                            if(_formKey.currentState!.validate()){
-                              saveImageToDb();
-                            }
-                          },
-                            child: const Text(
-                              'Save',
+                          child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : Center(
+                            child:Text(
+                              'Sub Category image',
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(onPressed: (){
+                          _pickImage();
+                        }, child: Text(
+                          'Upload Image',
+                        ),),
                       ],
                     ),
+                    SizedBox(width: 10,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        snapshot==null ? const Text('Loading...') :
+                        _dropDownButton(),
+                        const SizedBox(height: 8,),
+                        if(_noCategorySelected == true)
+                          const Text('No Main Category Selected', style: TextStyle(color: Colors.red,),),
+                        SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return 'Enter Sub Category Name';
+                              }
+                            },
+                            controller: _subCartName,
+                            decoration: const InputDecoration(
+                              label: Text('Enter Sub category name'),
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              TextButton(onPressed: (){
+                                clear();
+                              }, child: Text( 'Cancel', style: TextStyle(color: Theme.of(context).primaryColor,),),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
+                                ),
+                              ),
+                              const SizedBox(width: 10,),
+                              if(image!=null)
+                                ElevatedButton(onPressed: (){
+                                  if(_selectedValue==null){
+                                    setState(() {
+                                      _noCategorySelected = true;
+                                    });
+                                    return;
+                                  }
+                                  if(_formKey.currentState!.validate()){
+                                    saveImageToDb();
+                                  }
+                                },
+                                  child: const Text(
+                                    'Save',
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const Divider(color: Colors.orange,),
+              const SizedBox(height: 10,),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.all(10),
+                child:  const Text(
+                  'Sub Category List',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
                   ),
-                ],
+                ),
+              ),
+              const SizedBox(height: 10,),
+              SubCategoryListWidget(
+                reference: _service.subCart,
               ),
             ],
           ),
-
-          const Divider(color: Colors.orange,),
-          const SizedBox(height: 10,),
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(10),
-            child:  const Text(
-              'Sub Category List',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10,),
-          SubCategoryListWidget(
-            reference: _service.subCart,
-          ),
-        ],
+        ),
       ),
     );
   }

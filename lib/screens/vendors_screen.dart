@@ -24,29 +24,34 @@ class VendorScreen extends StatelessWidget {
         ),
       );
     }
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 50,
-            child: const Text(
-              'Registered Vendors',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 28,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 50,
+                child: const Text(
+                  'Registered Vendors',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 28,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.9, // Adjust the height as needed
+                child: SingleChildScrollView(
+                  child: VendorsList(),
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9, // Adjust the height as needed
-            child: SingleChildScrollView(
-              child: VendorsList(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

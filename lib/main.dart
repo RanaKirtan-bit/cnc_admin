@@ -48,13 +48,13 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
 
-  Widget _selectedScreen = const DashBoardScreen();
+  Widget _selectedScreen =  DashBoardScreen();
 
   screenSelector(item){
       switch(item.route){
         case DashBoardScreen.id:
           setState(() {
-            _selectedScreen = const DashBoardScreen();
+            _selectedScreen =  DashBoardScreen();
           });
           break;
         case CategoryScreen.id:
@@ -93,7 +93,13 @@ class _SideMenuState extends State<SideMenu> {
     DateTime now = DateTime.now();
     String formattedDateTime = DateTimeFormat.format(now, format: AmericanDateFormats.abbrDayOfWeek);
 
-    return AdminScaffold(
+    return LayoutBuilder(
+        builder: (context, constraints) {
+      // Check if the height is unbounded
+      bool isHeightUnbounded = constraints.maxHeight == double.infinity;
+
+
+      return AdminScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Click&Cart Admin', style: TextStyle(letterSpacing: 2),),
@@ -169,9 +175,13 @@ class _SideMenuState extends State<SideMenu> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: _selectedScreen,
-      ),
+        body: isHeightUnbounded
+            ? SingleChildScrollView(
+          child: _selectedScreen,
+        )
+            : _selectedScreen,
+      );
+        },
     );
   }
 }

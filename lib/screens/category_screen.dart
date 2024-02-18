@@ -110,122 +110,127 @@ DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');      //NE
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(10),
-            child:  const Text(
-                'Categories',
-                    style: TextStyle(
-                          fontSize: 26,
-                      fontWeight: FontWeight.w700,
-            ),
-            ),
-          ),
-          const Divider(
-            color: Colors.grey,
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 10,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.all(10),
+                child:  const Text(
+                    'Categories',
+                        style: TextStyle(
+                              fontSize: 26,
+                          fontWeight: FontWeight.w700,
                 ),
-                Column(
+                ),
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   children: [
-                    Container(
-                      height: 150,
-                      width:  150,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade500,
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: Colors.grey.shade500),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 150,
+                          width:  150,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade500,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.grey.shade500),
 
-                      ),
-                      child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : const Center(
-                         child:Text(
-                          'Category image',
+                          ),
+                          child: image!= null  ? Image.memory(image, fit: BoxFit.cover,) : const Center(
+                             child:Text(
+                              'Category image',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(onPressed: (){
+                            _pickImage();
+                        }, child: const Text(
+                          'Upload Image',
+                        ),),
+                      ],
+                    ),
+                    const SizedBox(width: 20,),
+                     SizedBox(
+                        width: 200,
+                      child: TextFormField(
+                        validator: (value) {
+                          if(value!.isEmpty){
+                            return 'Enter Category Name';
+                          }
+                      },
+                        controller: _cartName,
+                        decoration: const InputDecoration(
+                            label: Text('Enter category name'),
+                          contentPadding: EdgeInsets.zero,
                         ),
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      width: 10,
                     ),
-                    ElevatedButton(onPressed: (){
-                        _pickImage();
+                    TextButton(onPressed: (){
+                      clear();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
+                    ),
+                      child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    ),
+                    const SizedBox(width: 10,),
+                    image == null ? Container() : ElevatedButton(onPressed: (){
+                      if(_formKey.currentState!.validate()){
+                        saveImageToDb();
+                      }
                     }, child: const Text(
-                      'Upload Image',
-                    ),),
+                      'Save',
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(width: 20,),
-                 SizedBox(
-                    width: 200,
-                  child: TextFormField(
-                    validator: (value) {
-                      if(value!.isEmpty){
-                        return 'Enter Category Name';
-                      }
-                  },
-                    controller: _cartName,
-                    decoration: const InputDecoration(
-                        label: Text('Enter category name'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                TextButton(onPressed: (){
-                  clear();
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).primaryColor),),
-                ),
-                  child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                ),
-                const SizedBox(width: 10,),
-                image == null ? Container() : ElevatedButton(onPressed: (){
-                  if(_formKey.currentState!.validate()){
-                    saveImageToDb();
-                  }
-                }, child: const Text(
-                  'Save',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            color: Colors.grey,
-          ),
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(10),
-            child:  const Text(
-              'Category List',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
               ),
-            ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.all(10),
+                child:  const Text(
+                  'Category List',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10,),
+              CategoryListWidget(
+                reference: _service.categories,
+              ),
+            ],
           ),
-          const SizedBox(height: 10,),
-          CategoryListWidget(
-            reference: _service.categories,
-          ),
-        ],
+        ),
       ),
     );
   }

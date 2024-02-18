@@ -118,7 +118,7 @@ class _MainCategoryListWidgetState extends State<MainCategoryListWidget> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 3,
                 mainAxisSpacing: 3,
-                childAspectRatio: 6/2,
+                childAspectRatio: 6/2.7,
               ),
               itemCount: snapshot.data!.size,
               itemBuilder: (context, index) {
