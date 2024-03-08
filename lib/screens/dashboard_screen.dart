@@ -9,6 +9,9 @@ class DashBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Dashboard'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -22,19 +25,17 @@ class DashBoardScreen extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Text('Error loading data: ${snapshot.error}');
                 } else {
-                  return Text(
-                    'Total Sellers: ${snapshot.data}',
-                    style: TextStyle(fontSize: 18),
+                  return _buildStatCard(
+                    title: 'Total Sellers',
+                    value: snapshot.data!,
+                    icon: Icons.people,
                   );
                 }
               },
             ),
 
             SizedBox(height: 16),
-           // _buildStatCard(
-             // title: 'Total Products',
-              //valueFuture: _service.getTotalProducts(),
-            //),
+
             FutureBuilder<int>(
               future: _service.getTotalProducts(),
               builder: (context, snapshot) {
@@ -43,9 +44,10 @@ class DashBoardScreen extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Text('Error loading data: ${snapshot.error}');
                 } else {
-                  return Text(
-                    'Total Products: ${snapshot.data}',
-                    style: TextStyle(fontSize: 18),
+                  return _buildStatCard(
+                    title: 'Total Products',
+                    value: snapshot.data!,
+                    icon: Icons.shopping_bag,
                   );
                 }
               },
@@ -59,6 +61,26 @@ class DashBoardScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildStatCard({required String title, required int value, required IconData icon}) {
+    return Card(
+      elevation: 4,
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          'Total: $value',
+          style: TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+        leading: Icon(
+          icon,
+          size: 40,
+          color: Colors.blue,
+        ),
+      ),
+    );
+  }
 
   Widget _buildCategoryWiseProductCount() {
     return FutureBuilder<Map<String, int>>(
@@ -85,7 +107,6 @@ class DashBoardScreen extends StatelessWidget {
     );
   }
 
-
   Widget _buildCategoryWisePieChart(Map<String, int>? categoryData) {
     List<Color> colors = [
       Colors.cyanAccent,
@@ -95,38 +116,34 @@ class DashBoardScreen extends StatelessWidget {
       // Add more colors as needed
     ];
 
-    return Container(
-      height: 200, // Set a specific height for the chart
-      child: PieChart(
-        PieChartData(
-          sections: categoryData?.entries
-              .map(
-                (entry) => PieChartSectionData(
-              value: entry.value.toDouble(),
-              color: colors[categoryData.keys.toList().indexOf(entry.key) % colors.length],
-              title: "${entry.key}\n${entry.value}", // Display category name and product count
-              radius: 100, // Set the radius of the pie chart sections
-              titleStyle: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+    return Card(
+      elevation: 4,
+      child: Container(
+        height: 300, // Set a specific height for the chart
+        child: PieChart(
+          PieChartData(
+            sections: categoryData?.entries
+                .map(
+                  (entry) => PieChartSectionData(
+                value: entry.value.toDouble(),
+                color: colors[categoryData.keys.toList().indexOf(entry.key) % colors.length],
+                title: "${entry.key}\n${entry.value}", // Display category name and product count
+                radius: 150, // Set the radius of the pie chart sections
+                titleStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
-          )
-              .toList() ??
-              [],
-          borderData: FlBorderData(show: false),
-          centerSpaceRadius: 0,
-          sectionsSpace: 0,
+            )
+                .toList() ??
+                [],
+            borderData: FlBorderData(show: false),
+            centerSpaceRadius: 0,
+            sectionsSpace: 0,
+          ),
         ),
       ),
     );
   }
-
-
-
-
-
-
-
 }
